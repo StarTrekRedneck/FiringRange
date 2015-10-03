@@ -36,9 +36,14 @@ namespace WebApplication1.Areas.MyOrders.Controllers
 
         // GET api/orders/5
         [HttpGet("{orderNumber}")]
-        public Order Get(int orderNumber)
+        public IActionResult Get(int orderNumber)
         {
-            return _orders.Where(o => o.OrderNum == orderNumber).FirstOrDefault();
+            var order = _orders.Where(o => o.OrderNum == orderNumber).FirstOrDefault();
+
+            if (order == null)
+                return new HttpStatusCodeResult(404);
+
+            return new ObjectResult(order);
         }
     }
 }
